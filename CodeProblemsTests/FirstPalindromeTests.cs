@@ -1,4 +1,5 @@
 using CodeProblems.Controllers;
+using CodeProblems.Services;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using Shouldly;
@@ -7,12 +8,12 @@ namespace CodeProblemsTests
 {
     public class FirstPalindromeTests
     {
-        private ILogger<FirstPalindromeController> _loggerMock;
+        private IFirstPalindromeService _firstPalindromeService;
 
         [SetUp]
         public void Setup()
         {
-            _loggerMock = A.Fake<ILogger<FirstPalindromeController>>();
+            _firstPalindromeService = new FirstPalindromeService();
         }
 
         [Test]
@@ -21,8 +22,7 @@ namespace CodeProblemsTests
         [TestCase("", new string[] { "def", "ghi" })]
         public void FirstPalindrome_PositiveTestCases(string result, params string[] words)
         {
-            FirstPalindromeController firstPalindromeController = new FirstPalindromeController(_loggerMock);
-            string firstPalindrome = firstPalindromeController.GetFirstPalindrome(words);
+            string firstPalindrome = _firstPalindromeService.GetFirstPalindrome(words);
 
             firstPalindrome.ShouldBe(result);
         }

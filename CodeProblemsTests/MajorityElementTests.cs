@@ -1,4 +1,5 @@
 using CodeProblems.Controllers;
+using CodeProblems.Services;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
 using Shouldly;
@@ -7,20 +8,19 @@ namespace CodeProblemsTests
 {
     public class MajorityElementTests
     {
-        private ILogger<MajorityElementController> _loggerMock;
+        private IMajorityElementService _majorityElementService;
 
         [SetUp]
         public void Setup()
         {
-            _loggerMock = A.Fake<ILogger<MajorityElementController>>();
+            _majorityElementService = new MajorityElementService();
         }
 
         [TestCase(new int[] { -1, 1, -1 }, -1)]
         [Test]
         public void GetMajorityElement_MinusNumbersSupplied(int[] nums, int result)
         {
-            MajorityElementController majorityElementController = new MajorityElementController(_loggerMock);
-            int majorityElement = majorityElementController.GetMajorityElement(nums);
+            int majorityElement = _majorityElementService.GetMajorityElement(nums);
 
             majorityElement.ShouldBe(result);
         }
@@ -29,11 +29,9 @@ namespace CodeProblemsTests
         [Test]
         public void GetMajorityElement_EmptyArray(int[] nums, int result)
         {
-            MajorityElementController majorityElementController = new MajorityElementController(_loggerMock);
-
             Should.Throw<Exception>(() =>
             {
-                int majorityElement = majorityElementController.GetMajorityElement(nums);
+                int majorityElement = _majorityElementService.GetMajorityElement(nums);
             });
         }
 
@@ -41,8 +39,7 @@ namespace CodeProblemsTests
         [Test]
         public void GetMajorityElement_ReturnsFirstMajorityElementWhenTied(int[] nums, int result)
         {
-            MajorityElementController majorityElementController = new MajorityElementController(_loggerMock);
-            int majorityElement = majorityElementController.GetMajorityElement(nums);
+            int majorityElement = _majorityElementService.GetMajorityElement(nums);
 
             majorityElement.ShouldBe(result);
         }
@@ -51,8 +48,7 @@ namespace CodeProblemsTests
         [Test]
         public void GetMajorityElement_ReturnsMajorityElementWithOneEntryInArray(int[] nums, int result)
         {
-            MajorityElementController majorityElementController = new MajorityElementController(_loggerMock);
-            int majorityElement = majorityElementController.GetMajorityElement(nums);
+            int majorityElement = _majorityElementService.GetMajorityElement(nums);
 
             majorityElement.ShouldBe(result);
         }
